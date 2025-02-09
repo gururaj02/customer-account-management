@@ -1,0 +1,34 @@
+﻿@model customer_account_management.Models.Account
+
+<h2>Open a New Bank Account</h2>
+
+@if (ViewData["Message"] != null)
+{
+    <div class="alert alert-info">@ViewData["Message"]</div>
+}
+
+<form asp-controller="Account" asp-action="OpenAccount" method="post">
+    <div class="form-group">
+        <label for="FullName">Full Name</label>
+        <input asp-for="FullName" class="form-control" required />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Balance">Initial Deposit Amount</label>
+        <input asp-for="Balance" type="number" class="form-control" required />
+        <span asp-validation-for="Balance" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="SecurityPin">Security PIN</label>
+        <input asp-for="SecurityPin" type="password" class="form-control" required />
+        <span asp-validation-for="SecurityPin" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Create Account</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

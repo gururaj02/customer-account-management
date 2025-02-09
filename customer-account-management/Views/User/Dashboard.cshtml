@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2 class="text-center">Welcome, @ViewData["UserEmail"]!</h2>
+
+<div class="text-center">
+    <a href="@Url.Action("OpenAccount", "Account")" class="btn btn-success">Create Bank Account</a>
+</div>

@@ -1,0 +1,30 @@
+﻿@model customer_account_management.Models.Account
+
+@{
+    ViewData["Title"] = "User Registration";
+}
+
+<h2>User Registration</h2>
+
+<form asp-controller="User" asp-action="Register" method="post">
+    <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-control" asp-for="FullName" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" asp-for="Email" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" asp-for="Password" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
+@if (ViewData["Message"] != null)
+{
+    <div class="alert alert-info mt-3">
+        @ViewData["Message"]
+    </div>
+}
