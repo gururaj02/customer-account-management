@@ -23,15 +23,8 @@ namespace customer_account_management.Migrations
 
             modelBuilder.Entity("customer_account_management.Models.Account", b =>
                 {
-                    b.Property<long>("AccountNumber")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("AccountNumber"));
-
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -41,21 +34,21 @@ namespace customer_account_management.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AccountNumber");
+                    b.HasKey("Email");
 
                     b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("customer_account_management.Models.User", b =>
                 {
-                    b.Property<long>("AccountNumber")
+                    b.Property<int>("AccountNumber")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("AccountNumber"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountNumber"));
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -65,8 +58,10 @@ namespace customer_account_management.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SecurityPin")
-                        .HasColumnType("int");
+                    b.Property<string>("SecurityPin")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
 
                     b.HasKey("AccountNumber");
 

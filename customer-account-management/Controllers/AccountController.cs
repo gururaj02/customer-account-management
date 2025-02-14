@@ -13,38 +13,52 @@ namespace customer_account_management.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet]
-        public IActionResult OpenAccount()
+        // Show Register Page
+        public IActionResult Register()
         {
             return View();
         }
 
+        // Handle Register Form Submission
         [HttpPost]
-        public IActionResult OpenAccount(Account model)
+        public async Task<IActionResult> Register(Account model)
         {
-            if (!ModelState.IsValid)
-            {
-                ViewData["Message"] = "Invalid Data. Please fill all fields correctly.";
-                return View(model);
-            }
+            if (!ModelState.IsValid) return View(model);
 
-            string? userEmail = HttpContext.Session.GetString("UserEmail");
-            if (string.IsNullOrEmpty(userEmail))
-            {
-                return RedirectToAction("Login", "User"); // Redirect to login if session is missing
-            }
+            bool success = await _accountService.RegisterAsync(model);
+            if (success)
+                return RedirectToAction("Login");
 
-            model.Email = userEmail;
-            bool result = _accountService.OpenAccount(model);
-
-            if (!result)
-            {
-                ViewData["Message"] = "Account already exists!";
-                return View();
-            }
-
-            ViewData["Message"] = "Account created successfully!";
-            return RedirectToAction("Dashboard", "User");
+            ModelState.AddModelError("", "Email already exists!");
+            return View(model);
         }
+
+        // Show Login Page
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // Handle Login Form Submission
+        [HttpPost]
+        public async Task<IActionResult> Login(string email, string password)
+        {
+            var user = await _accountService.LoginAsync(email, password);
+            if (user != null)
+            {
+                TempData["SuccessMessage"] = "Login successful!";
+                return RedirectToAction("Dashboard");
+            }
+
+            ModelState.AddModelError("", "Invalid email or password.");
+            return View();
+        }
+
+        // Dummy Dashboard Page (after login)
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+
     }
 }

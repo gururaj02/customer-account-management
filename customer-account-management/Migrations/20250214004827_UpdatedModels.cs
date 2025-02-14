@@ -5,7 +5,7 @@
 namespace customer_account_management.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class UpdatedModels : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,12 +27,12 @@ namespace customer_account_management.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    AccountNumber = table.Column<long>(type: "bigint", nullable: false)
+                    AccountNumber = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Balance = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SecurityPin = table.Column<int>(type: "int", nullable: false)
+                    Balance = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    SecurityPin = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
                 },
                 constraints: table =>
                 {

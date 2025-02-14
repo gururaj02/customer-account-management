@@ -1,4 +1,5 @@
 ﻿using customer_account_management.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace customer_account_management.Services
@@ -12,22 +13,23 @@ namespace customer_account_management.Services
             _context = context;
         }
 
-        public bool OpenAccount(Account model)
+        // Register a new user
+        public async Task<bool> RegisterAsync(Account account)
         {
-            if (_context.Accounts.Any(a => a.Email == model.Email))
-            {
-                return false; // Account already exists
-            }
+            // Check if email already exists
+            var existingUser = await _context.Accounts.FirstOrDefaultAsync(a => a.Email == account.Email);
+            if (existingUser != null) return false;
 
-            model.AccountNumber = GenerateAccountNumber();
-            _context.Accounts.Add(model);
-            _context.SaveChanges();
+            // Directly save user (without hashing password)
+            _context.Accounts.Add(account);
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        private long GenerateAccountNumber()
+        // Login user
+        public async Task<Account?> LoginAsync(string email, string password)
         {
-            return _context.Accounts.Any() ? _context.Accounts.Max(a => a.AccountNumber) + 1 : 100;
+            return await _context.Accounts.FirstOrDefaultAsync(a => a.Email == email && a.Password == password);
         }
     }
 }

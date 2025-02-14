@@ -6,19 +6,20 @@ namespace customer_account_management.Models
     public class User
     {
         [Key]
-        public long AccountNumber { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int AccountNumber { get; set; }
 
         [Required]
-        public string FullName { get; set; } = default!;
+        public string FullName { get; set; } = string.Empty;
 
         [Required, EmailAddress]
-        public string Email { get; set; } = default!;
+        public string Email { get; set; } = string.Empty;
 
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal Balance { get; set; } = 0;
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal Balance { get; set; } = 0.00M;
 
-        [Required]
-        public int SecurityPin { get; set; }
+        [Required, MinLength(4), MaxLength(4)]
+        public string SecurityPin { get; set; } = string.Empty;
     }
 }

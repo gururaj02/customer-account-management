@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add session services
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
+//builder.Services.AddDistributedMemoryCache();
+//builder.Services.AddSession(options =>
+//{
+//    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+//    options.Cookie.HttpOnly = true;
+//    options.Cookie.IsEssential = true;
+//});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -28,16 +28,15 @@ builder.Services.AddScoped<AccountService>();
 var app = builder.Build();
 
 // Enable session middleware
-app.UseSession();
+//app.UseSession();
 
-app.UseRouting();
-app.UseAuthorization();
+//app.UseRouting();
+//app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.Run();
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}");
+//app.Run();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
