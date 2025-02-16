@@ -1,6 +1,7 @@
 ﻿using customer_account_management.Models;
 using customer_account_management.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http; // Import for session
 
 namespace customer_account_management.Controllers
 {
@@ -39,25 +40,43 @@ namespace customer_account_management.Controllers
             return View();
         }
 
-        // Handle Login Form Submission
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
             var user = await _accountService.LoginAsync(email, password);
-            if (user != null)
+
+            if (user == null)
             {
-                TempData["SuccessMessage"] = "Login successful!";
-                return RedirectToAction("Dashboard");
+                ModelState.AddModelError("", "Invalid email or password.");
+                return View(); // Stay on login page and show error
             }
 
-            ModelState.AddModelError("", "Invalid email or password.");
+            // Store user session data (optional)
+            HttpContext.Session.SetString("FullName", user.FullName);
+
+            return RedirectToAction("Dashboard");
+        }
+
+
+        // Show Dashboard Page (After Login)
+        public IActionResult Dashboard()
+        {
+            var fullName = HttpContext.Session.GetString("FullName");
+
+            if (string.IsNullOrEmpty(fullName))
+            {
+                return RedirectToAction("Login");
+            }
+
+            ViewBag.FullName = fullName; // Pass name to view
             return View();
         }
 
-        // Dummy Dashboard Page (after login)
-        public IActionResult Dashboard()
+        // Logout action to clear session
+        public IActionResult Logout()
         {
-            return View();
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
     }

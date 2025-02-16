@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    var fullName = Context.Session.GetString("FullName");
+}
+
+<div class="container text-center mt-5">
+    @* <h2>Welcome, @fullName!</h2> *@
+    <h2>Welcome, @Context.Session.GetString("FullName")!</h2>
+    <p>What would you like to do today?</p>
+
+    <a class="btn btn-primary mt-3" asp-action="OpenAccount" asp-controller="Account">Create New Account</a>
+</div>

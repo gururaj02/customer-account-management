@@ -26,6 +26,12 @@ namespace customer_account_management.Services
             return true;
         }
 
+        public async Task<bool> UserExistsAsync(string email)
+        {
+            return await _context.Accounts.AnyAsync(u => u.Email == email);
+        }
+
+
         // Login user
         public async Task<Account?> LoginAsync(string email, string password)
         {

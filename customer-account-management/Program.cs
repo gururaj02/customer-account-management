@@ -3,14 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add session services
-//builder.Services.AddDistributedMemoryCache();
-//builder.Services.AddSession(options =>
-//{
-//    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
-//    options.Cookie.HttpOnly = true;
-//    options.Cookie.IsEssential = true;
-//});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -21,22 +13,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 builder.Services.AddScoped<UserService>();
-
 builder.Services.AddScoped<AccountService>();
 
+// Add session services
+builder.Services.AddDistributedMemoryCache(); // Stores session data in memory
+builder.Services.AddSession(); // Enables session
+builder.Services.AddHttpContextAccessor(); // Allows access to session in controllers
+// End
 
 var app = builder.Build();
 
-// Enable session middleware
-//app.UseSession();
-
-//app.UseRouting();
-//app.UseAuthorization();
-
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
-//app.Run();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -52,6 +38,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// Enable session
+app.UseSession();
+// End
 
 app.MapControllerRoute(
     name: "default",
